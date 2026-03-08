@@ -106,10 +106,18 @@ class Base:
 
 def capture(win):
     global latest_frame
-    buf=io.BytesIO()
-    pygame.image.save(win, buf, "JPEG")
+    buf = io.BytesIO()
+    # Scale nhỏ xuống trước khi gửi
+    small = pygame.transform.scale(win, (360, 576))
+    pygame.image.save(small, buf, "JPEG")
+    # Giảm quality xuống còn 50
+    from PIL import Image
+    buf.seek(0)
+    img = Image.open(buf)
+    out = io.BytesIO()
+    img.save(out, format='JPEG', quality=50)
     with frame_lock:
-        latest_frame=buf.getvalue()
+        latest_frame = out.getvalue()
 
 
 # ════════════════════════════════════════
@@ -287,5 +295,5 @@ def action():
     return jsonify({'status':'ok'})
 
 if __name__=='__main__':
-    port=int(os.environ.get('PORT',5000))
+    port=int(os.environ.get('PORT',10000))
     app.run(host='0.0.0.0',port=port,threaded=True)

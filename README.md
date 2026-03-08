@@ -201,5 +201,4 @@ Key parameters from `config-feedforward.txt` that shape how the AI evolves:
 **Bao Khoi**
 - GitHub: [@KhoiBao1](https://github.com/KhoiBao1)
 
----
 

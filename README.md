@@ -157,7 +157,6 @@ def capture(win):
 | **HTML / CSS / JS** | Frontend UI |
 | **Render** | Cloud deployment |
 
----
 
 ## Requirements
 

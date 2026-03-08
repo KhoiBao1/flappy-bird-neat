@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Flappy Bird — NEAT AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@700;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --y:#f7d336;--yd:#c8a800;--sky:#4ec0e4;
+  --red:#ff4444;--green:#5db85d;--dark:#0d1b35;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Nunito',sans-serif;
+  background:linear-gradient(160deg,#0d1b35 0%,#0a1525 100%);
+  color:#fff;min-height:100vh;overflow-x:hidden;
+}
+
+/* ── LANDING ── */
+#landing{
+  display:flex;flex-direction:column;align-items:center;
+  padding:56px 20px 80px;
+}
+.hero-bird{font-size:60px;animation:bob 1.8s ease-in-out infinite;margin-bottom:4px}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-14px) rotate(4deg)}}
+h1{
+  font-family:'Press Start 2P',monospace;
+  font-size:clamp(16px,3.5vw,32px);color:var(--y);
+  text-shadow:3px 3px 0 var(--yd),0 0 40px rgba(247,211,54,.35);
+  text-align:center;line-height:1.6;margin:14px 0 8px;
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.sub{color:rgba(255,255,255,.55);font-size:14px;margin-bottom:44px;letter-spacing:1px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;width:100%;max-width:960px}
+.card{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;padding:30px 24px 26px;cursor:pointer;
+  backdrop-filter:blur(10px);transition:transform .25s,box-shadow .25s;
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,transparent 55%);
+  border-radius:16px;pointer-events:none;
+}
+.card:hover{transform:translateY(-7px) scale(1.02)}
+.cr{border-top:4px solid var(--red)}.cr:hover{box-shadow:0 18px 48px rgba(255,68,68,.22)}
+.cb{border-top:4px solid var(--sky)}.cb:hover{box-shadow:0 18px 48px rgba(78,192,228,.22)}
+.cg{border-top:4px solid var(--green)}.cg:hover{box-shadow:0 18px 48px rgba(93,184,93,.22)}
+.icon{font-size:44px;margin-bottom:10px;display:block}
+.badge{
+  display:inline-block;font-family:'Press Start 2P',monospace;
+  font-size:7px;padding:4px 9px;border-radius:5px;margin-bottom:11px;letter-spacing:1px;
+}
+.br{background:rgba(255,68,68,.15);color:#ff9090;border:1px solid rgba(255,68,68,.3)}
+.bb{background:rgba(78,192,228,.15);color:#a0e8ff;border:1px solid rgba(78,192,228,.3)}
+.bg{background:rgba(93,184,93,.15);color:#a0ffa0;border:1px solid rgba(93,184,93,.3)}
+.card h2{font-family:'Press Start 2P',monospace;font-size:12px;line-height:1.7;margin-bottom:9px}
+.card p{font-size:13px;line-height:1.65;color:rgba(255,255,255,.62);margin-bottom:18px}
+.pbtn{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);
+  color:#fff;padding:8px 16px;border-radius:9px;
+  font-family:'Press Start 2P',monospace;font-size:10px;
+  transition:background .2s;
+}
+.card:hover .pbtn{background:rgba(255,255,255,.17)}
+
+/* ── GAME SCREEN ── */
+#game-screen{display:none;flex-direction:column;align-items:center;padding:20px;min-height:100vh}
+.ghead{
+  display:flex;align-items:center;gap:14px;
+  width:100%;max-width:560px;margin-bottom:14px;
+}
+.back{
+  font-family:'Press Start 2P',monospace;font-size:10px;
+  padding:8px 14px;border-radius:8px;cursor:pointer;
+  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);
+  color:#fff;transition:background .2s;white-space:nowrap;
+}
+.back:hover{background:rgba(255,255,255,.18)}
+.mlabel{font-family:'Press Start 2P',monospace;font-size:9px;color:rgba(255,255,255,.45);letter-spacing:2px}
+
+.game-wrap{
+  position:relative;
+  border-radius:14px;overflow:hidden;
+  box-shadow:0 0 60px rgba(0,0,0,.55),0 0 0 2px rgba(255,255,255,.07);
+}
+#stream{display:block;width:500px;max-width:100%;height:auto;background:#0d1b35}
+
+/* overlay on stream */
+#stream-overlay{
+  position:absolute;inset:0;
+  background:rgba(10,20,40,.85);backdrop-filter:blur(4px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;padding:28px;
+}
+#stream-overlay.hidden{display:none}
+.ov-icon{font-size:52px}
+.ov-title{font-family:'Press Start 2P',monospace;font-size:clamp(13px,2.5vw,20px);color:var(--y);text-align:center;line-height:1.6}
+.ov-hint{font-size:12px;color:rgba(255,255,255,.45);text-align:center}
+
+/* hint bar below canvas */
+.hint-bar{
+  margin-top:12px;font-size:12px;color:rgba(255,255,255,.45);
+  text-align:center;letter-spacing:.5px;
+}
+.hint-bar span{color:var(--y);font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- ══════ LANDING ══════ -->
+<div id="landing">
+  <div class="hero-bird">🐦</div>
+  <h1>FLAPPY BIRD<br/>× NEAT AI</h1>
+  <p class="sub">Python · Pygame · NEAT-Python · 3 Game Modes</p>
+
+  <div class="cards">
+    <div class="card cr" onclick="startMode('ai-vision')">
+      <span class="icon">🤖</span>
+      <span class="badge br">AI + VISION RAYS</span>
+      <h2>AI Training<br/>with Red Lines</h2>
+      <p>Watch NEAT train a population in real time. Red sensor lines show exactly what the neural network sees each frame.</p>
+      <span class="pbtn">▶ WATCH</span>
+    </div>
+    <div class="card cb" onclick="startMode('player')">
+      <span class="icon">🎮</span>
+      <span class="badge bb">PLAYER MODE</span>
+      <h2>Play It<br/>Yourself!</h2>
+      <p>Classic Flappy Bird — click or press Space to flap. Hit a pipe and a Game Over screen with a Try Again button appears.</p>
+      <span class="pbtn">▶ PLAY</span>
+    </div>
+    <div class="card cg" onclick="startMode('ai-clean')">
+      <span class="icon">✨</span>
+      <span class="badge bg">AI CLEAN MODE</span>
+      <h2>AI Plays —<br/>No Distractions</h2>
+      <p>The same NEAT-trained AI but with a clean view — no red lines. Watch birds master the game generation by generation.</p>
+      <span class="pbtn">▶ WATCH</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ GAME SCREEN ══════ -->
+<div id="game-screen">
+  <div class="ghead">
+    <button class="back" onclick="goBack()">← BACK</button>
+    <span class="mlabel" id="mlabel">MODE</span>
+  </div>
+
+  <div class="game-wrap">
+    <img id="stream" src="" alt="game stream" width="500" height="800"/>
+    <div id="stream-overlay">
+      <div class="ov-icon">⏳</div>
+      <div class="ov-title">Loading game...</div>
+      <div class="ov-hint">Starting Python backend</div>
+    </div>
+  </div>
+
+  <div class="hint-bar" id="hint-bar"></div>
+</div>
+
+<script>
+const LABELS={
+  'ai-vision':'🤖 AI + VISION RAYS',
+  'player':'🎮 PLAYER MODE',
+  'ai-clean':'✨ AI CLEAN MODE'
+};
+const HINTS={
+  'ai-vision':'Watching AI train — <span>no input needed</span>',
+  'player':'<span>Click</span> on the game or press <span>SPACE</span> to flap',
+  'ai-clean':'Watching AI play — <span>no input needed</span>'
+};
+
+let currentMode=null;
+
+async function startMode(mode){
+  currentMode=mode;
+  document.getElementById('landing').style.display='none';
+  const gs=document.getElementById('game-screen');
+  gs.style.display='flex';
+  document.getElementById('mlabel').textContent=LABELS[mode];
+  document.getElementById('hint-bar').innerHTML=HINTS[mode];
+  document.getElementById('stream-overlay').classList.remove('hidden');
+
+  // start backend
+  await fetch('/start/'+mode);
+
+  // wait a moment for first frame
+  setTimeout(()=>{
+    document.getElementById('stream').src='/video_feed?t='+Date.now();
+    document.getElementById('stream-overlay').classList.add('hidden');
+  },1200);
+}
+
+async function goBack(){
+  await fetch('/stop');
+  currentMode=null;
+  document.getElementById('stream').src='';
+  document.getElementById('game-screen').style.display='none';
+  document.getElementById('landing').style.display='flex';
+  document.getElementById('stream-overlay').classList.remove('hidden');
+}
+
+// ── player input ──
+document.addEventListener('keydown',e=>{
+  if(currentMode!=='player') return;
+  if(e.code==='Space'||e.code==='ArrowUp'){
+    e.preventDefault(); sendJump();
+  }
+});
+document.getElementById('stream').addEventListener('click',()=>{
+  if(currentMode==='player') sendJump();
+});
+document.getElementById('stream').addEventListener('touchstart',e=>{
+  if(currentMode==='player'){e.preventDefault();sendJump();}
+},{passive:false});
+
+function sendJump(){
+  fetch('/action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'jump'})});
+}
+</script>
+</body>
+</html>

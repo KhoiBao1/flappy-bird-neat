@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: flappy-bird-neat
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: SDL_VIDEODRIVER
+        value: dummy
+      - key: SDL_AUDIODRIVER
+        value: dummy

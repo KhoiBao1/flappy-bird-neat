@@ -15,7 +15,7 @@
 
 > ⚠️ **Note:** The live demo runs on Render's free tier, so graphics have been slightly reduced to maintain performance on limited server resources. For the best experience, see the [Run Locally](#-run-locally-best-experience) section below.
 
-
+![AI playing Flappy Bird](assets/demo.gif)
 
 ## About This Project
 

@@ -196,19 +196,10 @@ Key parameters from `config-feedforward.txt` that shape how the AI evolves:
 
 ---
 
-## 👤 Author
+## Author
 
 **Bao Khoi**
 - GitHub: [@KhoiBao1](https://github.com/KhoiBao1)
 
 ---
 
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-<div align="center">
-  <sub>Built from scratch with Python 🐍 · Powered by evolution 🧬 · Deployed on the web 🌐</sub>
-</div>

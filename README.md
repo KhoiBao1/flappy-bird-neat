@@ -53,7 +53,6 @@ Top gap dist  ──►   [NEAT auto]   ──►
 Bot gap dist  ──►                 ──►
 ```
 
----
 
 ## Architecture
 
@@ -93,7 +92,6 @@ Browser displays as <img> tag   (looks like live video)
 User clicks → POST /action → bird.jump() on server
 ```
 
----
 
 ## Run Locally (Best Experience)
 
@@ -147,7 +145,6 @@ def capture(win):
         latest_frame = buf.getvalue()
 ```
 
----
 
 ## Tech Stack
 
@@ -170,7 +167,6 @@ pygame==2.6.1
 neat-python
 ```
 
----
 
 ## NEAT Configuration Highlights
 
@@ -183,7 +179,6 @@ Key parameters from `config-feedforward.txt` that shape how the AI evolves:
 | `activation_default` | tanh | Neuron activation function |
 | `weight_mutate_rate` | 0.8 | How often weights mutate |
 
----
 
 ## Preview
 
@@ -191,7 +186,6 @@ Key parameters from `config-feedforward.txt` that shape how the AI evolves:
 |:---:|:---:|:---:|
 | Choose your mode | Red lines = neural inputs | Classic gameplay |
 
----
 
 ## Author
 

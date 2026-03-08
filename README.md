@@ -8,17 +8,16 @@
 [![NEAT](https://img.shields.io/badge/NEAT--Python-2.0-orange)](https://neat-python.readthedocs.io)
 [![Render](https://img.shields.io/badge/Deployed%20on-Render-46E3B7?logo=render)](https://render.com)
 
----
 
-## 🌐 Live Demo
+## Live Demo
 
 🔗 **[flappy-bird-neat.onrender.com](https://flappy-bird-neat.onrender.com)**
 
 > ⚠️ **Note:** The live demo runs on Render's free tier, so graphics have been slightly reduced to maintain performance on limited server resources. For the best experience, see the [Run Locally](#-run-locally-best-experience) section below.
 
----
 
-## 📖 About This Project
+
+## About This Project
 
 This project is a **complete ground-up recreation** of Flappy Bird — not a fork, not a tutorial copy. Every class, physics calculation, collision system, and rendering pipeline was written manually.
 
@@ -26,9 +25,7 @@ What makes it more than just a clone is the integration of **NEAT (NeuroEvolutio
 
 The game is served as a **live web app** using Flask, which streams the Pygame canvas as an MJPEG video feed to the browser — meaning the actual Python game runs on the server and is watched in real time.
 
----
-
-## 🎮 Three Game Modes
+## Three Game Modes
 
 | Mode | Description |
 |------|-------------|
@@ -36,9 +33,9 @@ The game is served as a **live web app** using Flask, which streams the Pygame c
 | 🎮 **Player Mode** | Classic Flappy Bird. Click or press `Space` to flap. Includes a Game Over screen with a **Try Again** button. |
 | ✨ **AI Clean Mode** | Same NEAT AI, but with a clean interface — no sensor lines. Watch the birds evolve without distraction. |
 
----
 
-## 🧠 How the AI Works
+
+## How the AI Works
 
 The AI uses **NEAT (NeuroEvolution of Augmenting Topologies)** via the `neat-python` library.
 
@@ -58,7 +55,7 @@ Bot gap dist  ──►                 ──►
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 flappy-bird-neat/
@@ -98,7 +95,7 @@ User clicks → POST /action → bird.jump() on server
 
 ---
 
-## 🚀 Run Locally (Best Experience)
+## Run Locally (Best Experience)
 
 Running locally gives full 60 FPS with full-resolution graphics — no streaming overhead.
 
@@ -120,7 +117,7 @@ python app.py
 
 **4. Open your browser at** `http://localhost:10000`
 
-### ⚡ Optional: Full-resolution graphics
+### Optional: Full-resolution graphics
 
 The live demo uses a reduced-quality capture function to save bandwidth on the free server. To restore full quality locally, open `app.py` and replace the `capture()` function:
 
@@ -152,7 +149,7 @@ def capture(win):
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Technology | Role |
 |------------|------|
@@ -165,7 +162,7 @@ def capture(win):
 
 ---
 
-## 📦 Requirements
+## Requirements
 
 ```
 flask
@@ -175,7 +172,7 @@ neat-python
 
 ---
 
-## 🔧 NEAT Configuration Highlights
+## NEAT Configuration Highlights
 
 Key parameters from `config-feedforward.txt` that shape how the AI evolves:
 
@@ -188,7 +185,7 @@ Key parameters from `config-feedforward.txt` that shape how the AI evolves:
 
 ---
 
-## 📸 Preview
+## Preview
 
 | Landing Page | AI Vision Rays | Player Mode |
 |:---:|:---:|:---:|

@@ -1,3 +1,4 @@
 flask
 pygame==2.6.1
 neat-python
+Pillow

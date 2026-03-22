@@ -29,9 +29,9 @@ The game is served as a **live web app** using Flask, which streams the Pygame c
 
 | Mode | Description |
 |------|-------------|
-| 🤖 **AI + Vision Rays** | NEAT AI trains in real time. Red sensor lines visualize the exact inputs fed into the neural network each frame. |
-| 🎮 **Player Mode** | Classic Flappy Bird. Click or press `Space` to flap. Includes a Game Over screen with a **Try Again** button. |
-| ✨ **AI Clean Mode** | Same NEAT AI, but with a clean interface — no sensor lines. Watch the birds evolve without distraction. |
+| **AI + Vision Rays** | NEAT AI trains in real time. Red sensor lines visualize the exact inputs fed into the neural network each frame. |
+| **Player Mode** | Classic Flappy Bird. Click or press `Space` to flap. Includes a Game Over screen with a **Try Again** button. |
+| **AI Clean Mode** | Same NEAT AI, but with a clean interface — no sensor lines. Watch the birds evolve without distraction. |
 
 
 
